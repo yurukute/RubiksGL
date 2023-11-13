@@ -1,5 +1,8 @@
 package org.ctu;
 
+import org.ctu.Mesh;
+import org.ctu.Shader;
+
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
@@ -14,10 +17,15 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class RubiksGL {
     private long window;
+    private Mesh cubeMesh;
+    private Shader shader;
 
     public void run() {
         init();
         loop();
+
+        cubeMesh.cleanup();
+        shader.cleanup();
 
         // Free the window callbacks and destroy the window
         glfwFreeCallbacks(window);
@@ -70,6 +78,47 @@ public class RubiksGL {
 
         GL.createCapabilities();
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+        // Define the vertices of the cube
+        float[] vertices = {
+                // Front face
+                -0.5f, 0.5f, 0.5f,  // Top left
+                -0.5f, -0.5f, 0.5f,  // Bottom left
+                0.5f, -0.5f, 0.5f,  // Bottom right
+                0.5f, 0.5f, 0.5f,  // Top right
+
+                // Back face
+                -0.5f, 0.5f, -0.5f,  // Top left
+                -0.5f, -0.5f, -0.5f,  // Bottom left
+                0.5f, -0.5f, -0.5f,  // Bottom right
+                0.5f, 0.5f, -0.5f,  // Top right
+
+                // Left face
+                -0.5f, 0.5f, -0.5f,  // Top left
+                -0.5f, -0.5f, -0.5f,  // Bottom left
+                -0.5f, -0.5f, 0.5f,  // Bottom right
+                -0.5f, 0.5f, 0.5f,  // Top right
+
+                // Right face
+                0.5f, 0.5f, -0.5f,  // Top left
+                0.5f, -0.5f, -0.5f,  // Bottom left
+                0.5f, -0.5f, 0.5f,  // Bottom right
+                0.5f, 0.5f, 0.5f,  // Top right
+
+                // Top face
+                -0.5f, 0.5f, -0.5f,  // Top left
+                -0.5f, 0.5f, 0.5f,  // Bottom left
+                0.5f, 0.5f, 0.5f,  // Bottom right
+                0.5f, 0.5f, -0.5f,  // Top right
+
+                // Bottom face
+                -0.5f, -0.5f, -0.5f,  // Top left
+                -0.5f, -0.5f, 0.5f,  // Bottom left
+                0.5f, -0.5f, 0.5f,  // Bottom right
+                0.5f, -0.5f, -0.5f  // Top right
+        };
+
+        cubeMesh = new Mesh(vertices);
     }
 
     private void loop() {
@@ -77,7 +126,9 @@ public class RubiksGL {
         while ( !glfwWindowShouldClose(window) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+            shader.bind();
+            cubeMesh.render();
+            shader.unbind();
 
             glfwSwapBuffers(window);
             glfwPollEvents();
