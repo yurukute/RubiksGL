@@ -82,43 +82,43 @@ public class RubiksGL {
         // Define the vertices of the cube
         float[] vertices = {
                 // Front face
-                -0.5f, 0.5f, 0.5f,  // Top left
+                -0.5f,  0.5f, 0.5f,  // Top left
                 -0.5f, -0.5f, 0.5f,  // Bottom left
-                0.5f, -0.5f, 0.5f,  // Bottom right
-                0.5f, 0.5f, 0.5f,  // Top right
+                 0.5f, -0.5f, 0.5f,  // Bottom right
+                 0.5f,  0.5f, 0.5f,  // Top right
 
                 // Back face
-                -0.5f, 0.5f, -0.5f,  // Top left
+                -0.5f,  0.5f, -0.5f,  // Top left
                 -0.5f, -0.5f, -0.5f,  // Bottom left
-                0.5f, -0.5f, -0.5f,  // Bottom right
-                0.5f, 0.5f, -0.5f,  // Top right
+                 0.5f, -0.5f, -0.5f,  // Bottom right
+                 0.5f,  0.5f, -0.5f,  // Top right
 
                 // Left face
-                -0.5f, 0.5f, -0.5f,  // Top left
+                -0.5f,  0.5f, -0.5f,  // Top left
                 -0.5f, -0.5f, -0.5f,  // Bottom left
-                -0.5f, -0.5f, 0.5f,  // Bottom right
-                -0.5f, 0.5f, 0.5f,  // Top right
+                -0.5f, -0.5f,  0.5f,  // Bottom right
+                -0.5f,  0.5f,  0.5f,  // Top right
 
                 // Right face
-                0.5f, 0.5f, -0.5f,  // Top left
+                0.5f,  0.5f, -0.5f,  // Top left
                 0.5f, -0.5f, -0.5f,  // Bottom left
-                0.5f, -0.5f, 0.5f,  // Bottom right
-                0.5f, 0.5f, 0.5f,  // Top right
+                0.5f, -0.5f,  0.5f,  // Bottom right
+                0.5f,  0.5f,  0.5f,  // Top right
 
                 // Top face
                 -0.5f, 0.5f, -0.5f,  // Top left
-                -0.5f, 0.5f, 0.5f,  // Bottom left
-                0.5f, 0.5f, 0.5f,  // Bottom right
-                0.5f, 0.5f, -0.5f,  // Top right
+                -0.5f, 0.5f,  0.5f,  // Bottom left
+                 0.5f, 0.5f,  0.5f,  // Bottom right
+                 0.5f, 0.5f, -0.5f,  // Top right
 
                 // Bottom face
-                -0.5f, -0.5f, -0.5f,  // Top left
-                -0.5f, -0.5f, 0.5f,  // Bottom left
-                0.5f, -0.5f, 0.5f,  // Bottom right
-                0.5f, -0.5f, -0.5f  // Top right
+                -0.5f, -0.5f, -0.5f, // Top left
+                -0.5f, -0.5f,  0.5f, // Bottom left
+                 0.5f, -0.5f,  0.5f, // Bottom right
+                 0.5f, -0.5f, -0.5f  // Top right
         };
-
         cubeMesh = new Mesh(vertices);
+        shader = new Shader("src/main/resources/vertex.vs", "src/main/resources/fragment.fs");
     }
 
     private void loop() {
