@@ -14,6 +14,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class Window {
     private long window;
+    private Projection projection;
     private Shader shader = null;
 
 
@@ -59,6 +60,13 @@ public class Window {
 
         GL.createCapabilities();
         glClearColor(0, 0, 0, 0);
+
+        projection = new Projection(width, height);
+        glfwSetFramebufferSizeCallback(window, (win, w, h) -> resize(w, h));
+    }
+
+    private void resize(int width, int height) {
+        projection.updateProjMatrix(width, height);
     }
 
     public void setShader(Shader shader) {

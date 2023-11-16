@@ -5,11 +5,10 @@ layout (location = 1) in vec3 color;
 
 out vec3 fragmentColor;
 
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 projection;
+uniform mat4 model;
 
 void main() {
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+    gl_Position = projection * model * vec4(position, 1.0);
     fragmentColor = color;
 }

@@ -63,4 +63,8 @@ public class Shader {
     public void cleanup() {
         glDeleteProgram(programID);
     }
+
+    public int getProgramId() {
+        return programID;
+    }
 }
