@@ -10,10 +10,10 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Mesh implements Renderable {
     private int vaoID; // vertex array object
-    private List<Integer> vboIDList; // vertex buffer object
+    private List<Integer> vboIDList; // vertex buffer object list
     private int vertexCount;
 
-    public Mesh(float[] positions, float[] colors, float[] indices) {
+    public Mesh(float[] positions, float[] colors, int[] indices) {
         vertexCount = indices.length;
         vboIDList = new ArrayList<>();
 
@@ -31,11 +31,11 @@ public class Mesh implements Renderable {
         glBindVertexArray(0);
     }
 
-    private void addBufferObj(float[] vertices, int target, boolean attribEnabled) {
+    private void addBufferObj(float[] buffer, int target, boolean attribEnabled) {
         int vboID = glGenBuffers();
         vboIDList.add(vboID);
         glBindBuffer(target, vboID);
-        glBufferData(target, vertices, GL_STATIC_DRAW);
+        glBufferData(target, buffer, GL_STATIC_DRAW);
         if (attribEnabled) {
             int idx = vboIDList.size() - 1;
             glEnableVertexAttribArray(idx);
@@ -43,9 +43,21 @@ public class Mesh implements Renderable {
         }
     }
 
+    private void addBufferObj(int[] buffer, int target, boolean attribEnabled) {
+        int vboID = glGenBuffers();
+        vboIDList.add(vboID);
+        glBindBuffer(target, vboID);
+        glBufferData(target, buffer, GL_STATIC_DRAW);
+        if (attribEnabled) {
+            int idx = vboIDList.size() - 1;
+            glEnableVertexAttribArray(idx);
+            glVertexAttribPointer(idx, 3, GL_INT, false, 0, 0);
+        }
+    }
+
     public void render(Window window) {
         glBindVertexArray(vaoID);
-        glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+        glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
 

@@ -4,12 +4,17 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class Model {
+public class Model implements Renderable {
     protected Matrix4f model = new Matrix4f();
 
-    public Vector3f position = new Vector3f();
+    protected Vector3f position = new Vector3f();
 
-    public Quaternionf rotation = new Quaternionf();
+    protected Quaternionf rotation = new Quaternionf();
+
+    @Override
+    public Matrix4f getModel() {
+        return model;
+    }
 
     public void updateModel() {
         float scale = 1;

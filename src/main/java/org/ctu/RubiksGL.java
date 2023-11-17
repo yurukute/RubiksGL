@@ -4,8 +4,6 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class RubiksGL {
     private Window window;
-    private Shader shader;
-    private Projection projection;
     private Cube rubikCube;
 
     public void run() {
@@ -13,7 +11,6 @@ public class RubiksGL {
         loop();
 
         rubikCube.cleanup();
-        shader.cleanup();
         window.destroy();
     }
 
@@ -26,14 +23,7 @@ public class RubiksGL {
             }
         });
 
-        // Create mesh and shader
-        shader = new Shader("src/main/resources/vertex.vs", "src/main/resources/fragment.fs");
-        window.setShader(shader);
-
-        UniformsMap uniforms = new UniformsMap(shader.getProgramId());
-        uniforms.createUniform("projection");
-        uniforms.createUniform("model");
-
+        // Create object
         rubikCube = new Cube();
     }
 
@@ -41,7 +31,7 @@ public class RubiksGL {
         while (!window.isClosed()) {
             window.clear();
 
-            window.draw(rubikCube);
+            window.render(rubikCube);
 
             window.swapBuffer();
             window.pollEvents();

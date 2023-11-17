@@ -4,7 +4,7 @@ import org.ctu.Mesh;
 import org.ctu.Renderable;
 import org.ctu.Window;
 
-public class Cube extends Model implements Renderable {
+public class Cube extends Model {
     private static final float[] vertices = new float[]{
             // Front (z-index = 0,5)
             -0.5f,  0.5f,  0.5f,  // Top left
@@ -52,6 +52,8 @@ public class Cube extends Model implements Renderable {
 
     public Cube() {
         cubeMesh = new Mesh(vertices, colors, indices);
+        position.z = -2;
+        updateModel();
     }
 
     @Override

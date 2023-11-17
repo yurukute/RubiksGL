@@ -16,6 +16,7 @@ public class Window {
     private long window;
     private Projection projection;
     private Shader shader = null;
+    private UniformsMap uniforms;
 
 
     public Window(int width, int height, String name) {
@@ -63,6 +64,13 @@ public class Window {
 
         projection = new Projection(width, height);
         glfwSetFramebufferSizeCallback(window, (win, w, h) -> resize(w, h));
+
+        String shader_path = "src/main/resources/shader/";
+        shader = new Shader(shader_path + "vertex.vs", shader_path + "fragment.fs");
+
+        uniforms = new UniformsMap(shader.getProgramId());
+        uniforms.createUniform("projection");
+        uniforms.createUniform("model");
     }
 
     private void resize(int width, int height) {
@@ -101,10 +109,12 @@ public class Window {
         glfwShowWindow(window);
     }
 
-    public void draw(Renderable renderer) {
-        if (shader != null) shader.bind();
+    public void render(Renderable renderer) {
+        shader.bind();
+        uniforms.setUniform("projection", projection.getProjMatrix());
+        uniforms.setUniform("model", renderer.getModel());
         renderer.render(this);
-        if (shader != null) shader.unbind();
+        shader.unbind();
     }
 
     public void destroy() {
