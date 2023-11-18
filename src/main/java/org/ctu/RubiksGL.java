@@ -17,14 +17,22 @@ public class RubiksGL {
     private void init() {
         // Create window
         window = new Window(600, 600, "Rubik's OpenGL");
+        // Create object
+        rubikCube = new Cube();
+        // Set key event
         window.onKey((window, key, scancode, action, mods) -> {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
                 this.window.close();
             }
+            if (action == GLFW_REPEAT || action == GLFW_PRESS) {
+                switch (key) {
+                    case GLFW_KEY_UP -> rubikCube.moveUp();
+                    case GLFW_KEY_DOWN -> rubikCube.moveDown();
+                    case GLFW_KEY_LEFT -> rubikCube.moveLeft();
+                    case GLFW_KEY_RIGHT -> rubikCube.moveRight();
+                }
+            }
         });
-
-        // Create object
-        rubikCube = new Cube();
     }
 
     private void loop() {

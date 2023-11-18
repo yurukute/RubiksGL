@@ -5,6 +5,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class Model implements Renderable {
+    private final float step = 0.1f;
     protected Matrix4f model = new Matrix4f();
 
     protected Vector3f position = new Vector3f();
@@ -19,5 +20,25 @@ public class Model implements Renderable {
     public void updateModel() {
         float scale = 1;
         model.translationRotateScale(position, rotation, scale);
+    }
+
+    public void moveUp() {
+        position.y += step;
+        updateModel();
+    }
+
+    public void moveDown() {
+        position.y -= step;
+        updateModel();
+    }
+
+    public void moveLeft() {
+        position.x -= step;
+        updateModel();
+    }
+
+    public void moveRight() {
+        position.x += step;
+        updateModel();
     }
 }
