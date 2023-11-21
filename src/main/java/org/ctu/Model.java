@@ -5,12 +5,40 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class Model implements Renderable {
-    private final float step = 0.1f;
-    protected Matrix4f model = new Matrix4f();
-
+    private float step = 0.1f;
+    private Vector3f scale = new Vector3f(1, 1, 1);
+    private Matrix4f model = new Matrix4f();
+    private Matrix4f parent = new Matrix4f();
     protected Vector3f position = new Vector3f();
-
     protected Quaternionf rotation = new Quaternionf();
+
+    public Vector3f getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector3f position) {
+        this.position = position;
+    }
+
+    public Quaternionf getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(Quaternionf rotation) {
+        this.rotation = rotation;
+    }
+
+    public Vector3f getScale() {
+        return scale;
+    }
+
+    public void setScale(Vector3f scale) {
+        this.scale = scale;
+    }
+
+    public void setParent(Matrix4f parent) {
+        this.parent = parent;
+    }
 
     @Override
     public Matrix4f getModel() {
@@ -18,8 +46,8 @@ public class Model implements Renderable {
     }
 
     public void updateModel() {
-        float scale = 1;
-        model.translationRotateScale(position, rotation, scale);
+        model = new Matrix4f(parent).mul(
+                model.translationRotateScale(position, rotation, scale));
     }
 
     public void moveUp() {

@@ -4,7 +4,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class RubiksGL {
     private Window window;
-    private Cube rubikCube;
+    private RubiksCube rubikCube;
 
     public void run() {
         init();
@@ -18,7 +18,7 @@ public class RubiksGL {
         // Create window
         window = new Window(600, 600, "Rubik's OpenGL");
         // Create object
-        rubikCube = new Cube();
+        rubikCube = new RubiksCube(1f, 0.015f);
         // Set key event
         window.onKey((window, key, scancode, action, mods) -> {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
@@ -39,6 +39,7 @@ public class RubiksGL {
         while (!window.isClosed()) {
             window.clear();
 
+            rubikCube.update(0);
             window.render(rubikCube);
 
             window.swapBuffer();

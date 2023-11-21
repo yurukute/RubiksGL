@@ -1,8 +1,10 @@
 package org.ctu;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
+import org.joml.Vector2f;
 
 import java.nio.*;
 
@@ -14,10 +16,11 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class Window {
     private long window;
+    private int width;
+    private int height;
     private Projection projection;
     private Shader shader = null;
     private UniformsMap uniforms;
-
 
     public Window(int width, int height, String name) {
         GLFWErrorCallback.createPrint(System.err);
@@ -60,6 +63,7 @@ public class Window {
         display();
 
         GL.createCapabilities();
+        glEnable(GL_DEPTH_TEST);
         glClearColor(0, 0, 0, 0);
 
         projection = new Projection(width, height);
@@ -73,12 +77,16 @@ public class Window {
         uniforms.createUniform("model");
     }
 
-    private void resize(int width, int height) {
-        projection.updateProjMatrix(width, height);
+    public int getWidth() {
+        return width;
     }
 
-    public void setShader(Shader shader) {
-        this.shader = shader;
+    public int getHeight() {
+        return height;
+    }
+
+    private void resize(int width, int height) {
+        projection.updateProjMatrix(width, height);
     }
 
     public void onKey(GLFWKeyCallbackI callback) {

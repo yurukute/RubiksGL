@@ -1,68 +1,99 @@
 package org.ctu;
 
-import org.ctu.Mesh;
-import org.ctu.Renderable;
-import org.ctu.Window;
+import org.joml.Vector3f;
 
 public class Cube extends Model {
-    private static final float[] vertices = new float[]{
-            // Front (z-index = 0,5)
-            -0.5f,  0.5f,  0.5f,  // Top left
-             0.5f,  0.5f,  0.5f,  // Top right
-             0.5f, -0.5f,  0.5f,  // Bottom right
-            -0.5f, -0.5f,  0.5f,  // Bottom left
+    private final float[] vertices = {
+            -0.5f,  0.5f, 0, // Top left
+             0.5f,  0.5f, 0, // Top right
+             0.5f, -0.5f, 0, // Bottom right
+            -0.5f, -0.5f, 0, // Bottom left
 
-            // Back (z-index = -0,5)
-            -0.5f,  0.5f, -0.5f,  // Top left
-             0.5f,  0.5f, -0.5f,  // Top right
-             0.5f, -0.5f, -0.5f,  // Bottom right
-            -0.5f, -0.5f, -0.5f,  // Bottom left
+    };
+    private final int[] indices =  { 0, 1, 2, 0, 2, 3 };
+    private static final float HALF_PI = (float) Math.PI / 2;
+    private Vector3f center;
+    private float size;
+    private Mesh[] faces;
+
+    private static final Vector3f[] COLORS = new Vector3f[]{
+            new Vector3f(1, 0, 0),      // Red
+            new Vector3f(0, 1, 0),      // Green
+            new Vector3f(0, 0, 1),      // Blue
+            new Vector3f(1, 1, 0),      // Yellow
+            new Vector3f(1, 1, 1),      // White
+            new Vector3f(1, 0.25f, 0),  // Orange
     };
 
-    private static final float[] colors = new float[]{
-            0.5f, 0.0f, 0.0f,
-            0.0f, 0.5f, 0.0f,
-            0.0f, 0.0f, 0.5f,
-            0.0f, 0.5f, 0.5f,
-            0.5f, 0.0f, 0.0f,
-            0.0f, 0.5f, 0.0f,
-            0.0f, 0.0f, 0.5f,
-            0.0f, 0.5f, 0.5f,
-    };
+    public Cube(Vector3f center, float size) {
+        this.center = center;
+        this.size = size;
+        generateFaces(size);
+    }
 
-    private static final int[] indices = {
-            /*
-                   4 +------+ 5
-                   / |    / |
-                0 +------+ 1|
-                  |7 +---|--+ 6
-                  |/     | /
-                3 +------+ 2
-            */
-            // Clock-wise direction
-            0, 1, 2, 0, 3, 2,   // Front face
-            4, 5, 6, 4, 6, 7,   // Back face
-            4, 5, 1, 4, 1, 0,   // Top face
-            7, 6, 2, 7, 2, 3,   // Bottom face
-            0, 4, 7, 0, 7, 3,   // Left face
-            1, 5, 6, 1, 6, 2,   // Right face
-    };
+    public Vector3f getCenter() {
+        return center;
+    }
 
-    private Mesh cubeMesh = null;
+    private void generateFaces(float size) {
+        cleanup();
+        Mesh[] meshes = new Mesh[6];
 
-    public Cube() {
-        cubeMesh = new Mesh(vertices, colors, indices);
-        position.z = -2;
-        updateModel();
+        for (int i = 0; i < 6; i++) {
+            float[] colors = new float[4 * 3]; // rgb value for 4 points
+            for (int j = 0; j < 4 * 3; j += 3) {
+                colors[j]     = COLORS[i].x;
+                colors[j + 1] = COLORS[i].y;
+                colors[j + 2] = COLORS[i].z;
+            }
+            meshes[i] = new Mesh(vertices, colors, indices);
+            meshes[i].setScale(new Vector3f(size));
+        }
+        faces = meshes;
+        updateFaces();
+    }
+
+    private void updateFaces() {
+        Vector3f dz = new Vector3f(0, 0, size/2);
+        Vector3f dy = new Vector3f(0, size/2, 0);
+        Vector3f dx = new Vector3f(size/2, 0, 0);
+
+        faces[0].setPosition(new Vector3f(center).add(dz));
+        faces[5].setPosition(new Vector3f(center).sub(dz));
+        faces[1].setPosition(new Vector3f(center).add(dx));
+        faces[2].setPosition(new Vector3f(center).sub(dx));
+        faces[3].setPosition(new Vector3f(center).add(dy));
+        faces[4].setPosition(new Vector3f(center).sub(dy));
+
+        faces[1].getRotation().rotateY(HALF_PI);
+        faces[2].getRotation().rotateY(HALF_PI);
+        faces[3].getRotation().rotateX(HALF_PI);
+        faces[4].getRotation().rotateX(HALF_PI);
     }
 
     @Override
-    public void render(Window window) {
-        cubeMesh.render(window);
+    public void update(long time) {
+        updateModel();
+        for (Mesh face : faces) {
+            face.setParent(getModel());
+            face.update(time);
+        }
+    }
+
+    @Override
+    public void render(Window win) {
+        for (Mesh face : faces) {
+            win.render(face);
+        }
     }
 
     @Override
     public void cleanup() {
-        cubeMesh.cleanup();
+        if (faces == null) return;
+        for (Mesh face : faces) {
+            if (face != null) {
+                face.cleanup();
+            }
+        }
     }
 }

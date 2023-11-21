@@ -8,7 +8,7 @@ import java.util.List;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL30.*;
 
-public class Mesh implements Renderable {
+public class Mesh extends Model implements Renderable {
     private int vaoID; // vertex array object
     private List<Integer> vboIDList; // vertex buffer object list
     private int vertexCount;
@@ -53,6 +53,10 @@ public class Mesh implements Renderable {
             glEnableVertexAttribArray(idx);
             glVertexAttribPointer(idx, 3, GL_INT, false, 0, 0);
         }
+    }
+
+    public void update(long time) {
+        updateModel();
     }
 
     public void render(Window window) {
