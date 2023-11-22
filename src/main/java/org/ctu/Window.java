@@ -21,8 +21,13 @@ public class Window {
     private Projection projection;
     private Shader shader = null;
     private UniformsMap uniforms;
+    private static final DoubleBuffer xb = BufferUtils.createDoubleBuffer(1);
+    private static final DoubleBuffer yb = BufferUtils.createDoubleBuffer(1);
 
     public Window(int width, int height, String name) {
+        this.width = width;
+        this.height = height;
+
         GLFWErrorCallback.createPrint(System.err);
 
         if (!glfwInit()) {
@@ -89,8 +94,26 @@ public class Window {
         projection.updateProjMatrix(width, height);
     }
 
+    public Vector2f getMousePos() {
+        xb.clear();
+        yb.clear();
+        glfwGetCursorPos(window, xb, yb);
+        return new Vector2f(
+                (float) xb.get() / width - 0.5f,
+                (float) yb.get() / height - 0.5f
+        );
+    }
+
     public void onKey(GLFWKeyCallbackI callback) {
         glfwSetKeyCallback(window, callback);
+    }
+
+    public void onClick(GLFWMouseButtonCallbackI callback) {
+        glfwSetMouseButtonCallback(window, callback);
+    }
+
+    public void onCursorMove(GLFWCursorPosCallbackI callback) {
+        glfwSetCursorPosCallback(window, callback);
     }
 
     public void pollEvents() {

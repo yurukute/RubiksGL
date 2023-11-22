@@ -1,8 +1,6 @@
 package org.ctu;
 
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import org.joml.*;
 
 public class Model implements Renderable {
     private float step = 0.1f;
@@ -68,5 +66,16 @@ public class Model implements Renderable {
     public void moveRight() {
         position.x += step;
         updateModel();
+    }
+
+    public void rotate(float dx, float dy) {
+        Matrix4f afterRotate = new Matrix4f();
+        AxisAngle4f newAngle = new AxisAngle4f();
+
+        afterRotate.rotateX(dy);
+        afterRotate.rotateY(dx);
+        afterRotate.getRotation(newAngle);
+
+        rotation = new Quaternionf(newAngle).mul(getRotation());
     }
 }
