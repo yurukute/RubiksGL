@@ -1,5 +1,8 @@
-package org.ctu;
+package org.ctu.model;
 
+import org.ctu.opengl.Mesh;
+import org.ctu.opengl.Model;
+import org.ctu.opengl.Window;
 import org.joml.Vector3f;
 
 public class Cube extends Model {

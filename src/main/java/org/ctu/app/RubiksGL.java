@@ -1,5 +1,7 @@
-package org.ctu;
+package org.ctu.app;
 
+import org.ctu.model.RubiksCube;
+import org.ctu.opengl.Window;
 import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -34,6 +36,12 @@ public class RubiksGL {
                     case GLFW_KEY_DOWN -> rubikCube.moveDown();
                     case GLFW_KEY_LEFT -> rubikCube.moveLeft();
                     case GLFW_KEY_RIGHT -> rubikCube.moveRight();
+                    case GLFW_KEY_F -> rubikCube.rotateFrontFace((mods & GLFW_MOD_SHIFT) == 0);
+                    case GLFW_KEY_B -> rubikCube.rotateBackFace((mods & GLFW_MOD_SHIFT) == 0);
+                    case GLFW_KEY_U -> rubikCube.rotateUpFace((mods & GLFW_MOD_SHIFT) == 0);
+                    case GLFW_KEY_D -> rubikCube.rotateDownFace((mods & GLFW_MOD_SHIFT) == 0);
+                    case GLFW_KEY_L -> rubikCube.rotateLeftFace((mods & GLFW_MOD_SHIFT) == 0);
+                    case GLFW_KEY_R -> rubikCube.rotateRightFace((mods & GLFW_MOD_SHIFT) == 0);
                 }
             }
         });
@@ -61,10 +69,14 @@ public class RubiksGL {
     }
 
     private void loop() {
+        long lastTime = System.currentTimeMillis();
         while (!window.isClosed()) {
             window.clear();
 
-            rubikCube.update(0);
+            long now = System.currentTimeMillis();
+            long runtime = now - lastTime;
+            lastTime = now;
+            rubikCube.update(runtime);
             window.render(rubikCube);
 
             window.swapBuffer();

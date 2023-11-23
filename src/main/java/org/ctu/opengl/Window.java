@@ -1,4 +1,4 @@
-package org.ctu;
+package org.ctu.opengl;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
