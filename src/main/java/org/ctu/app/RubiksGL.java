@@ -2,6 +2,7 @@ package org.ctu.app;
 
 import org.ctu.model.RubiksCube;
 import org.ctu.opengl.Window;
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -11,6 +12,7 @@ public class RubiksGL {
     private RubiksCube rubikCube;
     private Vector2f mousePos;
     private boolean dragging;
+    private final float PI_OVER_8 = (float) Math.PI / 8;
 
     public void run() {
         init();
@@ -36,12 +38,24 @@ public class RubiksGL {
                     case GLFW_KEY_DOWN -> rubikCube.moveDown();
                     case GLFW_KEY_LEFT -> rubikCube.moveLeft();
                     case GLFW_KEY_RIGHT -> rubikCube.moveRight();
+                    case GLFW_KEY_Q -> rubikCube.rotate(-PI_OVER_8, 0);
+                    case GLFW_KEY_E -> rubikCube.rotate(PI_OVER_8, 0);
+                    case GLFW_KEY_N -> rubikCube.rotate(0, -PI_OVER_8);
+                    case GLFW_KEY_M -> rubikCube.rotate(0, PI_OVER_8);
                     case GLFW_KEY_F -> rubikCube.rotateFrontFace((mods & GLFW_MOD_SHIFT) == 0);
                     case GLFW_KEY_B -> rubikCube.rotateBackFace((mods & GLFW_MOD_SHIFT) == 0);
                     case GLFW_KEY_U -> rubikCube.rotateUpFace((mods & GLFW_MOD_SHIFT) == 0);
                     case GLFW_KEY_D -> rubikCube.rotateDownFace((mods & GLFW_MOD_SHIFT) == 0);
                     case GLFW_KEY_L -> rubikCube.rotateLeftFace((mods & GLFW_MOD_SHIFT) == 0);
-                    case GLFW_KEY_R -> rubikCube.rotateRightFace((mods & GLFW_MOD_SHIFT) == 0);
+                    case GLFW_KEY_R -> {
+                        if (mods != GLFW_MOD_CONTROL) {
+                            rubikCube.rotateRightFace((mods & GLFW_MOD_SHIFT) == 0);
+                        }
+                        else {
+                            rubikCube.setRotation(new Quaternionf());
+                            rubikCube.reset();
+                        }
+                    }
                 }
             }
         });

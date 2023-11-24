@@ -36,7 +36,7 @@ public class RubiksCube extends Model {
                 }
             }
         }
-        getPosition().z = -2;
+        getPosition().z = -(size*2);
     }
 
     public void rotateFrontFace(boolean clockwise) {
@@ -65,6 +65,19 @@ public class RubiksCube extends Model {
 
     protected void rotateFace(Vector3f face, int inv) {
         rotateQueue.add(new Pair<>(face, inv));
+    }
+
+    public void reset() {
+        rotateQueue.clear();
+
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    int idx = i * 3 * 3 + j * 3 + k;
+                    pieceRotMat[idx].identity();
+                }
+            }
+        }
     }
 
     private boolean belongsToFace(int idx, Vector3f face) {
