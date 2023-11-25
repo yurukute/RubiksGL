@@ -7,7 +7,7 @@ import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class RubiksGL {
+public class RubiksGL implements AppLogic {
     private Window window;
     private RubiksCube rubikCube;
     private Vector2f mousePos;
@@ -22,7 +22,7 @@ public class RubiksGL {
         window.destroy();
     }
 
-    private void init() {
+    public void init() {
         // Create window
         window = new Window(600, 600, "Rubik's OpenGL");
         // Create object
@@ -82,7 +82,7 @@ public class RubiksGL {
         });
     }
 
-    private void loop() {
+    public void loop() {
         long lastTime = System.currentTimeMillis();
         while (!window.isClosed()) {
             window.clear();
