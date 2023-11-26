@@ -1,4 +1,5 @@
 # Rubik's GL
+![](static/demo.png)
 ## Description
 A basic OpenGL Rubik's Cube rendering written in Java using LWJGL.
 ## Features

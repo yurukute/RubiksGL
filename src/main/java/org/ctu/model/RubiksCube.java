@@ -48,11 +48,11 @@ public class RubiksCube extends Model {
     }
 
     public void rotateUpFace(boolean clockwise) {
-        rotateFace(new Vector3f(0, 1, 0), clockwise ? 1 : -1);
+        rotateFace(new Vector3f(0, 1, 0), clockwise ? -1 : 1);
     }
 
     public void rotateDownFace(boolean clockwise) {
-        rotateFace(new Vector3f(0, -1, 0), clockwise ? 1 : -1);
+        rotateFace(new Vector3f(0, -1, 0), clockwise ? -1 : 1);
     }
 
     public void rotateLeftFace(boolean clockwise) {

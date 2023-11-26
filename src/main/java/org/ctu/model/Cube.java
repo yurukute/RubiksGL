@@ -11,7 +11,6 @@ public class Cube extends Model {
              0.5f,  0.5f, 0, // Top right
              0.5f, -0.5f, 0, // Bottom right
             -0.5f, -0.5f, 0, // Bottom left
-
     };
     private final int[] indices =  { 0, 1, 2, 0, 2, 3 };
     private static final float HALF_PI = (float) Math.PI / 2;
